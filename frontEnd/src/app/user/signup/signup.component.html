@@ -1,0 +1,64 @@
+<div class="row" hidden="true" id="successMessage">
+  <div class="alert alert-success" *ngIf="successMessage">{{successMessage}}</div>
+</div>
+
+<div class="row" hidden="true" id="errorMessage">
+  <div class="alert alert-danger" *ngIf="errorMessage">{{errorMessage}}</div>
+</div>
+
+<div class="row">
+  <div class="input-field col s6">
+    <input type="text" id="userName" [(ngModel)]="user.userName" name="userName" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label >UserName</label>
+  </div>
+  <div class="input-field col s6">
+    <input type="password" id="password" [(ngModel)]="user.password" name="password" required minlength="7" (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label >Password</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <input type="text" id="emailAddress" [(ngModel)]="user.emailAddress" name="emailAddress" [pattern]="emailPattern" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label data-error="Invalid Email!">Email</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s6">
+    <input type="text" id="firstName" [(ngModel)]="user.firstName" name="firstName" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label>First Name</label>
+  </div>
+  <div class="input-field col s6">
+    <input type="text" id="lastName" [(ngModel)]="user.lastName" name="lastName" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label>Last Name</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s6">
+    <input type="text" id="streetName" [(ngModel)]="user.address.streetName" name="streetName" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label>StreetName</label>
+  </div>
+  <div class="input-field col s6">
+    <input type="text" id="city" [(ngModel)]="user.address.city" name="city" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label>City</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s6">
+    <input type="text" id="country" [(ngModel)]="user.address.country" name="country" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label>Country</label>
+  </div>
+  <div class="input-field col s6">
+    <input type="text" id="zip" [(ngModel)]="user.address.zip" name="zip" required (keyup)="onkeypress()" (keydown)="onkeypress()"/>
+    <label>Zip</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="input-field col s12">
+    <button  id='signUpButton' [disabled]="buttonIsDisabled" class="btn-large btn-submit" (click)="OnSignUpSubmit()" type="submit">Submit</button>
+  </div>
+</div>
