@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service
 interface UserService{
     fun createUser(user: User) : User
     fun getByUserId(userId: Long): User?
+    fun validateLogin(userName: String, password: String): Boolean
+    fun getByUserName(userName: String): User
 }

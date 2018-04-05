@@ -4,5 +4,8 @@ import org.springframework.stereotype.Service
 
 @Service
 interface SHA256HashingService {
-    fun generateSecurePassword(password: String) : String
+    fun generateSecurePassword(password: String, salt: ByteArray) : String
+    fun generateSalt(): ByteArray
+    fun convertByteArrayToHex(byteArray: ByteArray): String
+    fun convertStringTOByteArray(saltHexString: String): ByteArray
 }

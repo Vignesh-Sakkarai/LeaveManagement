@@ -9,6 +9,7 @@ import com.vw.hexad.UserService.model.User
 import com.vw.hexad.UserService.model.exception.ErrorResponse
 import com.vw.hexad.UserService.service.UserService
 import org.hamcrest.Matchers
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +28,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 @RunWith(SpringJUnit4ClassRunner::class)
 class UserControllerTest{
 
-    private val user = User("Vignesh", "12345","vignesh@gmail.com",
+    private val user = User("Vignesh", "12345","Test", "vignesh@gmail.com",
             Address("StralSunderRing", "Wolfsburg", "Germany", "38440", 1L), 1L)
     var errorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "User Not Found for this provided userId::"+user.userId)
 
@@ -80,5 +81,13 @@ class UserControllerTest{
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorCode", Matchers.`is`(errorResponse.errorCode)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.errorMessage", Matchers.`is`(errorResponse.errorMessage)))
         Mockito.verify(userService).getByUserId(user.userId)
+    }
+
+    @Test
+    fun `SHOULD_VALIDATE_THE_USER_LOGIN_WITH_PROIVIDED_USER`(){
+        Mockito.`when`(userService.validateLogin("Vignesh", "071eE211"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/group/validateLogin", "Vignesh", "071eE211").contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk)
+        Mockito.verify(userService).validateLogin("Vignesh", "071eE211")
     }
 }

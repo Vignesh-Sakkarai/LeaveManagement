@@ -8,7 +8,10 @@ data class User(
         val userName: String,
 
         @Column(name="password")
-        val password: String,
+        var password: String,
+
+        @Column(name="salt")
+        var salt: String?,
 
         @Column(name="emailAddress")
         val emailAddress: String,
@@ -22,5 +25,5 @@ data class User(
         @Column(name="userId")
         val userId: Long = -1
 ){
-    constructor(): this("","","",null,-1)
+    constructor(): this("","","","",null,-1)
 }
