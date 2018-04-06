@@ -11,6 +11,7 @@ import org.mockito.Mock
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import javax.xml.bind.DatatypeConverter
 
 @RunWith(SpringJUnit4ClassRunner::class)
 class SHA256HashingServiceImplTest{
@@ -38,8 +39,10 @@ class SHA256HashingServiceImplTest{
     @Test
     fun `SHOULD_CONVERT_BYTE_ARRAY_TO_HEX_AS_A_STRING`(){
         val sha256HashingService = SHA256HashingServiceImpl()
-        val salt: ByteArray = sha256HashingService.generateSalt()
-        Assert.assertTrue(sha256HashingService.convertByteArrayToHex(salt) is String)
+        //val salt: ByteArray = sha256HashingService.generateSalt()
+        val salt: ByteArray = byteArrayOf(19, 107, 113, 120)
+        println("::::::::::::::::::" + sha256HashingService.convertByteArrayToHex(salt))
+        Assert.assertTrue(DatatypeConverter.printHexBinary(salt) is String)
     }
 
     @Test
@@ -52,7 +55,15 @@ class SHA256HashingServiceImplTest{
     @Test
     fun `SHOULD_CONVERT_HEX_STRING_TO_BYTE_ARRAY`(){
         val sha256HashingService = SHA256HashingServiceImpl()
-        Assert.assertTrue(sha256HashingService.convertStringTOByteArray("SALT") is ByteArray)
+        val salt: ByteArray = "136b7178".toByteArray()
+        println(":::::::::" + "136b7178".length)
+        if("136b7178".length % 2 == 0){
+            val hex: ByteArray = sha256HashingService.convertStringTOByteArray(sha256HashingService.convertByteArrayToHex(salt))
+            for(byte: Byte in hex){
+                println(":::::::::::" + byte)
+            }
+        }
+        Assert.assertTrue(salt is ByteArray)
     }
 
 }

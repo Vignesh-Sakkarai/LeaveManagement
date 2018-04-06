@@ -14,7 +14,7 @@ data class User(
         var salt: String?,
 
         @Column(name="emailAddress")
-        val emailAddress: String,
+        val emailAddress: String?,
 
         @OneToOne(cascade = arrayOf(CascadeType.ALL))  //Update the UsertTable as well bcos of Cascade property
         @JoinColumn(name="addressId", referencedColumnName = "addressId")

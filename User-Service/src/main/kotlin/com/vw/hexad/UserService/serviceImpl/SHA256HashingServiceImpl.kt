@@ -4,6 +4,7 @@ import com.vw.hexad.UserService.service.SHA256HashingService
 import org.springframework.stereotype.Service
 import java.security.MessageDigest
 import java.security.SecureRandom
+import javax.xml.bind.DatatypeConverter
 import kotlin.experimental.and
 
 
@@ -15,20 +16,25 @@ class SHA256HashingServiceImpl: SHA256HashingService{
 
     override fun generateSecurePassword(password: String, salt: ByteArray): String {
         val md: MessageDigest = updateMessageDigest(salt)
-        val bytes: ByteArray = md.digest(convertStringTOByteArray(password))
+        val bytes: ByteArray = md.digest(password.toByteArray())
         return convertByteArrayToHex(bytes)
     }
 
-    override fun convertByteArrayToHex(bytes: ByteArray): String {
-        val sb = StringBuilder()
-        for (i in bytes.indices) {
-            sb.append(Integer.toString((bytes[i] and 0xff.toByte()) + 0xff, 16).substring(1))
+    override fun convertByteArrayToHex(array: ByteArray): String {
+        val sb = StringBuilder(array.size * 2)
+        for (byte: Byte in array) {
+            sb.append(String.format("%x", byte))
         }
         return sb.toString()
     }
 
     override fun convertStringTOByteArray(saltHexString: String): ByteArray {
-        return saltHexString.toByteArray()
+        var result = ByteArray(saltHexString.length/2, {0})
+        for (i in 0 until saltHexString.length step 2){
+            var byte: Byte = Integer.valueOf(saltHexString.substring(i, i+2)).toByte()
+            result[i/2] = byte
+        }
+        return result
     }
 
     private fun updateMessageDigest(salt: ByteArray): MessageDigest {

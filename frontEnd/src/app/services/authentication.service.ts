@@ -21,7 +21,7 @@ export class AuthenticationService {
   validateLogin(userName: String, password: String): Observable<any> {
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers });
-    const data = JSON.stringify({userName: userName, password : password});
+    const data = {'userName': userName, 'password' : password};
     return this.http.post(this.baseUrl + '/group/validateLogin', data, options).map((res: Response) => res.json());
   }
 
