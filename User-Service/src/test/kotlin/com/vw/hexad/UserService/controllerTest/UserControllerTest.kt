@@ -30,6 +30,7 @@ class UserControllerTest{
 
     private val user = User("Vignesh", "12345","Test", "vignesh@gmail.com",
             Address("StralSunderRing", "Wolfsburg", "Germany", "38440", 1L), 1L)
+
     var errorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "User Not Found for this provided userId::"+user.userId)
 
     lateinit var mockMvc: MockMvc
@@ -47,7 +48,8 @@ class UserControllerTest{
     }
 
     @Test
-    fun `CREATE_USER_REQUEST_STATUS_MATCH_WITH_ISCREATED`(){
+    fun `SHOULD_CREATE_USER_WITH_VALID_DATA_AND_VERIFIED_THE_STATUS_MATCH_WITH_IS_CREATED`(){
+        Mockito.`when`(userService.createUser(user)).thenReturn(user)
         mockMvc.perform(MockMvcRequestBuilders.post("/web/signup", user).contentType(MediaType.APPLICATION_JSON)
                 .content(GsonJsonProvider().toJson(user))).andExpect(MockMvcResultMatchers.status().isCreated)
     }
@@ -85,8 +87,8 @@ class UserControllerTest{
 
     @Test
     fun `SHOULD_VALIDATE_THE_USER_LOGIN_WITH_PROIVIDED_USER`(){
-        Mockito.`when`(userService.validateLogin("Vignesh", "071eE211"))
-        mockMvc.perform(MockMvcRequestBuilders.post("/group/validateLogin", "Vignesh", "071eE211").contentType(MediaType.APPLICATION_JSON)
+        Mockito.`when`(userService.validateLogin("Vignesh", "12345678"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/group/validateLogin", "Vignesh", "12345678").contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk)
         Mockito.verify(userService).validateLogin("Vignesh", "071eE211")
     }

@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   OnLoginSubmit() {
     this.authService.validateLogin(this.user.userName, this.user.password).subscribe(data => {
       this.user = new User();
-      document.getElementById('successMessage').removeAttribute('hidden');
+       document.getElementById('errorMessage').setAttribute('hidden', 'true');
         return true;
     }, error => {
       this.user = new User();

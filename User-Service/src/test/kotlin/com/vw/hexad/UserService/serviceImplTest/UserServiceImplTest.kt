@@ -43,12 +43,6 @@ class UserServiceImplTest{
     }
 
     @Test
-    fun `SHOULD_THROW_THE_EXCEPTION_WHEN_IVALID_USER_OR_PASSWORD_FOUND`(){
-        val userService = UserServiceImpl()
-        userService.validateLogin("Vignesh", "071ee211")
-    }
-
-    @Test
     fun `SHOULD_FIND_THE_USER_BASED_ON_THE_VALID_USER_NAME`(){
         Mockito.`when`(userService.getByUserName("Vignesh")).thenReturn(user)
         Assert.assertEquals("vignesh@gmail.com", user.emailAddress)

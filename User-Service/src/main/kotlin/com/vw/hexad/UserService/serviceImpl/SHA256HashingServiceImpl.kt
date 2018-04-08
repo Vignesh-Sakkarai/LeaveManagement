@@ -23,15 +23,19 @@ class SHA256HashingServiceImpl: SHA256HashingService{
     override fun convertByteArrayToHex(array: ByteArray): String {
         val sb = StringBuilder(array.size * 2)
         for (byte: Byte in array) {
-            sb.append(String.format("%x", byte))
+            var hex: String = String.format("%x", byte)
+            if(hex.length == 1){
+                hex = "0" + hex
+            }
+            sb.append(hex)
         }
         return sb.toString()
     }
 
     override fun convertStringTOByteArray(saltHexString: String): ByteArray {
-        var result = ByteArray(saltHexString.length/2, {0})
+        var result: ByteArray = ByteArray(saltHexString.length/2)
         for (i in 0 until saltHexString.length step 2){
-            var byte: Byte = Integer.valueOf(saltHexString.substring(i, i+2)).toByte()
+            var byte: Byte = Integer.valueOf(saltHexString.substring(i, i+2), 16).toByte()
             result[i/2] = byte
         }
         return result
@@ -50,6 +54,4 @@ class SHA256HashingServiceImpl: SHA256HashingService{
         sr.nextBytes(salt)
         return salt
     }
-
 }
-

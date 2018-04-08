@@ -1,5 +1,6 @@
 package com.vw.hexad.UserService.serviceImpl
 
+import com.vw.hexad.UserService.exception.UserNotFoundException
 import com.vw.hexad.UserService.model.User
 import com.vw.hexad.UserService.repository.UserRepository
 import com.vw.hexad.UserService.service.AddressService
@@ -8,6 +9,7 @@ import com.vw.hexad.UserService.service.UserService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.stereotype.Service
 import javax.persistence.EntityNotFoundException
@@ -62,7 +64,11 @@ class UserServiceImpl : UserService {
     }
 
     override fun getByUserName(userName: String): User {
-        return userRepository.findByUserName(userName)
+        try{
+            return userRepository.findByUserName(userName)
+        }catch(ex: EmptyResultDataAccessException){
+            throw UserNotFoundException(userName)
+        }
     }
 
 }

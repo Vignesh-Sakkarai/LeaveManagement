@@ -16,4 +16,5 @@ class ExceptionController {
         var errorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.message)
         return errorResponse
     }
+
 }

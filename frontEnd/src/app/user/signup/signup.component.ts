@@ -39,6 +39,7 @@ export class SignupComponent implements OnInit {
     this.authService.registerUser(this.user).subscribe(data => {
         this.user = new User();
         this.user.address = new Address();
+        document.getElementById('errorMessage').setAttribute('hidden', 'true');
         this.successMessage = 'User Registered Successfully!!';
         document.getElementById('successMessage').removeAttribute('hidden');
         return true;

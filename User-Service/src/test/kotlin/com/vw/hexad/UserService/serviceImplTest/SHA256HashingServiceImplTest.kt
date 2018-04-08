@@ -39,31 +39,25 @@ class SHA256HashingServiceImplTest{
     @Test
     fun `SHOULD_CONVERT_BYTE_ARRAY_TO_HEX_AS_A_STRING`(){
         val sha256HashingService = SHA256HashingServiceImpl()
-        //val salt: ByteArray = sha256HashingService.generateSalt()
-        val salt: ByteArray = byteArrayOf(19, 107, 113, 120)
-        println("::::::::::::::::::" + sha256HashingService.convertByteArrayToHex(salt))
+        val salt: ByteArray = byteArrayOf(-56,70,-63,-19,-111,-123,-74,21,102,33,-49,-24,123,-92,109)
+        println("Hex String of Salt::" + sha256HashingService.convertByteArrayToHex(salt))
         Assert.assertTrue(DatatypeConverter.printHexBinary(salt) is String)
     }
 
     @Test
     fun `SHOULD_GENERATE_SECURE_PASSWORD_VALIDATE_IT_AS_A_STRING`(){
         val sha256HashingService = SHA256HashingServiceImpl()
-        val salt : ByteArray = sha256HashingService.generateSalt()
-        Assert.assertTrue(sha256HashingService.generateSecurePassword("$071eE211", sha256HashingService.generateSalt()) is String)
+        val salt: ByteArray = byteArrayOf(-125 ,38 ,28 ,-68 ,-35 ,-116 ,64 ,-30 ,40 ,-116 ,-83 ,79 ,14 ,-24 ,126 ,-23)
+        println("Generated Secure Password" + sha256HashingService.generateSecurePassword("12345678", salt))
+        Assert.assertTrue(sha256HashingService.generateSecurePassword("12345678", salt) is String)
     }
 
     @Test
     fun `SHOULD_CONVERT_HEX_STRING_TO_BYTE_ARRAY`(){
         val sha256HashingService = SHA256HashingServiceImpl()
-        val salt: ByteArray = "136b7178".toByteArray()
-        println(":::::::::" + "136b7178".length)
-        if("136b7178".length % 2 == 0){
-            val hex: ByteArray = sha256HashingService.convertStringTOByteArray(sha256HashingService.convertByteArrayToHex(salt))
-            for(byte: Byte in hex){
-                println(":::::::::::" + byte)
-            }
+        val hex: ByteArray = sha256HashingService.convertStringTOByteArray("c846c1ed9185b6156621cfe87ba46d")
+        for(byte: Byte in hex){
+            println("ByteArray of 136b7178 :: " + byte)
         }
-        Assert.assertTrue(salt is ByteArray)
     }
-
 }
