@@ -32,18 +32,12 @@ class UserController{
 
     @PostMapping(value = "/group/validateLogin")
     @ResponseStatus(HttpStatus.OK)
-    fun validateLogin(@RequestBody login: User): Boolean{
-        val user = userService.getByUserName(login.userName)
-        if(user != null){
-            val hashedValue = sha256HashingService.generateSecurePassword(login.password, sha256HashingService.convertStringTOByteArray(user.salt!!))
-            if(user.password == hashedValue){
-                return true
-            }else{
-                // Can not handle it as a seperate exception for security reason(attains only if the password is wrong)
-                throw UserNotFoundException("User Not Found for this provided userName::" + login.userName)
-            }
-        }else{
-            throw UserNotFoundException("User Not Found for this provided userName::" + login.userName)
+    fun validateLogin(@RequestBody loginInfo: User): Boolean{
+        val user = userService.getByUserName(loginInfo.userName)
+        val hashedValue = sha256HashingService.generateSecurePassword(loginInfo.password, sha256HashingService.convertStringTOByteArray(user.salt!!))
+        when(user.password){
+            hashedValue -> return true
+            else -> throw UserNotFoundException("User Not Found for this provided userName::" + loginInfo.userName)
         }
     }
 }

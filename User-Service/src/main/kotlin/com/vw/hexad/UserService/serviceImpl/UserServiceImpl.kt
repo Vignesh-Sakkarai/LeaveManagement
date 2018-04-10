@@ -42,16 +42,15 @@ class UserServiceImpl : UserService {
             user = userRepository.getOne(userId)
         }catch(ex: Exception){
             when(ex){
-                is EntityNotFoundException ->{
+                is EntityNotFoundException ->
                     Log.error("UserServiceImpl - getByUserId() : EntityNotFoundException" + ex.message)
-                }is JpaObjectRetrievalFailureException ->{
+                is JpaObjectRetrievalFailureException ->
                     Log.error("UserServiceImpl - getByUserId() : JpaObjectRetrievalFailureException" + ex.message)
-                }else ->{
+                else ->
                     Log.error("UserServiceImpl - getByUserId() : Exception" + ex.message)
-                }
             }
         }
-        return user;
+        return user
     }
 
     override fun validateLogin(userName: String, password: String): Boolean {
