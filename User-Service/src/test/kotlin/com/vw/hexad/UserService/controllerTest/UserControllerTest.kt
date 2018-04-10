@@ -7,6 +7,7 @@ import com.vw.hexad.UserService.exception.UserNotFoundException
 import com.vw.hexad.UserService.model.Address
 import com.vw.hexad.UserService.model.User
 import com.vw.hexad.UserService.model.exception.ErrorResponse
+import com.vw.hexad.UserService.service.SHA256HashingService
 import com.vw.hexad.UserService.service.UserService
 import org.hamcrest.Matchers
 import org.junit.Assert
@@ -40,6 +41,9 @@ class UserControllerTest{
 
     @Mock
     lateinit var userService: UserService
+
+    @Mock
+    lateinit var sha256HashingService : SHA256HashingService
 
     @Before
     fun setupMock(){
