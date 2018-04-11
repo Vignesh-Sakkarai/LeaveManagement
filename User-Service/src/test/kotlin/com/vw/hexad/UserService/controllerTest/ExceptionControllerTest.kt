@@ -23,6 +23,8 @@ class ExceptionControllerTest {
 
     private val jpaObjErrorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "EntityNotFoundException for the provided userId")
 
+    private val noEntityErrorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "EntityNotFoundException for the provided userId")
+
     @InjectMocks
     lateinit var exceptionController: ExceptionController
 
@@ -50,6 +52,17 @@ class ExceptionControllerTest {
             val handledErrorResponse:ErrorResponse = exceptionController.handleJpaObjectRetrievalFailureException(exception)
             assertEquals(handledErrorResponse.errorCode, jpaObjErrorResponse.errorCode)
             assertEquals(handledErrorResponse.errorMessage, jpaObjErrorResponse.errorMessage)
+        }
+    }
+
+    @Test
+    fun `SHOULD_HANDLE_ENTITY_NOT_FOUND_EXCEPTION_GET_404_ERROR_CODE`(){
+        try{
+            throw EntityNotFoundException()
+        }catch(exception: EntityNotFoundException){
+            val handledErrorResponse:ErrorResponse = exceptionController.handleEntityNotFoundException(exception)
+            assertEquals(handledErrorResponse.errorCode, noEntityErrorResponse.errorCode)
+            assertEquals(handledErrorResponse.errorMessage, noEntityErrorResponse.errorMessage)
         }
     }
 }

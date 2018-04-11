@@ -1,7 +1,9 @@
 package com.vw.hexad.UserService.serviceImplTest
 
+import com.vw.hexad.UserService.exception.UserNotFoundException
 import com.vw.hexad.UserService.model.Address
 import com.vw.hexad.UserService.model.User
+import com.vw.hexad.UserService.repository.AddressRepository
 import com.vw.hexad.UserService.repository.UserRepository
 import com.vw.hexad.UserService.service.AddressService
 import com.vw.hexad.UserService.service.UserService
@@ -37,6 +39,9 @@ class UserServiceImplTest{
     @Mock
     private lateinit var userRepository: UserRepository
 
+    @Mock
+    private lateinit var addressRepository: AddressRepository
+
     @Before
     fun setup(){
         MockitoAnnotations.initMocks(this)
@@ -71,6 +76,13 @@ class UserServiceImplTest{
         `when`(userRepository.findByUserName("Vignesh")).thenReturn(user)
         val expectedUser: User = userServiceImp.getByUserName("Vignesh")
         assertEquals(expectedUser.emailAddress, user.emailAddress)
+        verify(userRepository).findByUserName("Vignesh")
+    }
+
+    @Test(expected = UserNotFoundException::class)
+    fun `SHOULD_THROW_EXCEPTION_WHEN_GET_BY_USERNAME_AS_INVALID`(){
+        `when`(userRepository.findByUserName("InvalidUser")).thenThrow(UserNotFoundException::class.java)
+        userServiceImp.getByUserName("InvalidUser")
     }
 
 }

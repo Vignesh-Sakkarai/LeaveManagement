@@ -7,6 +7,7 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import javax.persistence.EntityNotFoundException
 
 @RestControllerAdvice
 class ExceptionController {
@@ -22,6 +23,13 @@ class ExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleJpaObjectRetrievalFailureException(ex: JpaObjectRetrievalFailureException): ErrorResponse{
         var errorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "EntityNotFoundException for the provided userId")
+        return errorResponse
+    }
+
+    @ExceptionHandler(EntityNotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun handleEntityNotFoundException(ex: EntityNotFoundException): ErrorResponse{
+        var errorResponse = ErrorResponse(HttpStatus.NOT_FOUND.value(), "EntityNotFoundException for the provided userId")
         return errorResponse
     }
 
