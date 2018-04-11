@@ -34,10 +34,12 @@ class UserController{
     @ResponseStatus(HttpStatus.OK)
     fun validateLogin(@RequestBody loginInfo: User): Boolean{
         val user = userService.getByUserName(loginInfo.userName)
-        val hashedValue = sha256HashingService.generateSecurePassword(loginInfo.password, sha256HashingService.convertStringTOByteArray(user.salt!!))
-        when(user.password){
-            hashedValue -> return true
-            else -> throw UserNotFoundException("User Not Found for this provided userName::" + loginInfo.userName)
-        }
+        user?.let {
+            val hashedValue = sha256HashingService.generateSecurePassword(loginInfo.password, sha256HashingService.convertStringTOByteArray(user.salt!!))
+            when(user.password){
+                hashedValue -> return true
+                else -> throw UserNotFoundException("User Not Found for this provided userName::" + loginInfo.userName)
+            }
+        }?: run{throw UserNotFoundException("User Not Found for this provided userName::" + loginInfo.userName)}
     }
 }

@@ -9,15 +9,19 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.springframework.http.HttpStatus
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import javax.persistence.EntityNotFoundException
 
 @RunWith(SpringJUnit4ClassRunner::class)
 class ExceptionControllerTest {
     lateinit var mockMvc: MockMvc
 
-    var errorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "User Not Found for this provided userId::1")
+    private val errorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "User Not Found for this provided userId::1")
+
+    private val jpaObjErrorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "EntityNotFoundException for the provided userId")
 
     @InjectMocks
     lateinit var exceptionController: ExceptionController
@@ -35,6 +39,17 @@ class ExceptionControllerTest {
             val handledErrorResponse:ErrorResponse = exceptionController.handleUserNotFoundException(exception)
             assertEquals(handledErrorResponse.errorCode, errorResponse.errorCode)
             assertEquals(handledErrorResponse.errorMessage, errorResponse.errorMessage)
+        }
+    }
+
+    @Test
+    fun `SHOULD_HANDLE_JPA_OBJECT_RETREIEVAL_FAILURE_EXCEPTION_GET_404_ERROR_CODE`(){
+        try{
+            throw JpaObjectRetrievalFailureException(EntityNotFoundException())
+        }catch(exception: JpaObjectRetrievalFailureException){
+            val handledErrorResponse:ErrorResponse = exceptionController.handleJpaObjectRetrievalFailureException(exception)
+            assertEquals(handledErrorResponse.errorCode, jpaObjErrorResponse.errorCode)
+            assertEquals(handledErrorResponse.errorMessage, jpaObjErrorResponse.errorMessage)
         }
     }
 }

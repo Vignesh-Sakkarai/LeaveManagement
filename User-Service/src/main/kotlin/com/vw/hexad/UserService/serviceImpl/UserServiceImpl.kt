@@ -37,34 +37,30 @@ class UserServiceImpl : UserService {
     }
 
     override fun getByUserId(userId: Long): User? {
-        var user: User? = null
-        try{
-            user = userRepository.getOne(userId)
+        return try{
+            userRepository.getOne(userId)
         }catch(ex: Exception){
             when(ex){
                 is EntityNotFoundException ->
-                    Log.error("UserServiceImpl - getByUserId() : EntityNotFoundException" + ex.message)
+                    throw EntityNotFoundException()
                 is JpaObjectRetrievalFailureException ->
-                    Log.error("UserServiceImpl - getByUserId() : JpaObjectRetrievalFailureException" + ex.message)
+                    throw JpaObjectRetrievalFailureException(EntityNotFoundException())
                 else ->
-                    Log.error("UserServiceImpl - getByUserId() : Exception" + ex.message)
+                    throw Exception()
             }
         }
-        return user
+
     }
 
     override fun validateLogin(userName: String, password: String): Boolean {
         val user: User = getByUserName(userName)
-        val salt: ByteArray = sha256HashingService.convertStringTOByteArray(password)
-        if(user.password == sha256HashingService.generateSecurePassword(password, salt)){
-            return true
-        }
-        return false
+        val salt: ByteArray = sha256HashingService.convertStringTOByteArray(user.salt!!)
+        return user.password == sha256HashingService.generateSecurePassword(password, salt)
     }
 
     override fun getByUserName(userName: String): User {
-        try{
-            return userRepository.findByUserName(userName)
+        return try{
+            userRepository.findByUserName(userName)
         }catch(ex: EmptyResultDataAccessException){
             throw UserNotFoundException(userName)
         }

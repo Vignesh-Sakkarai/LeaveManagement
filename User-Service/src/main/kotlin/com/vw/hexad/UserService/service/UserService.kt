@@ -9,5 +9,5 @@ interface UserService{
     fun createUser(user: User) : User
     fun getByUserId(userId: Long): User?
     fun validateLogin(userName: String, password: String): Boolean
-    fun getByUserName(userName: String): User
+    fun getByUserName(userName: String): User?
 }
