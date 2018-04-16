@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="user user-container">
+    <img id="profile-img" class="user-profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+    <p id="profile-name" class="user-profile-name"></p>
+
+      <form name="form-signin" (ngSubmit)="f.form.valid && OnLoginSubmit()" #f="ngForm" novalidate>
+        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+      <span id="reauth-email" class="reauth-email"></span>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !userName.valid }">
+        <label for="userName">Username</label>
+        <input type="text" class="form-control" id="userName" name="userName" [(ngModel)]="user.userName" #userName="ngModel" required />
+        <div *ngIf="f.submitted && !userName.valid" class="help-block">User Name is required</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password" #password="ngModel" required />
+        <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div>
+      </div>
+      <div id="remember" class="checkbox">
+
+      </div>
+      <button id="signInButtonId" class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+    </form><!-- /form -->
+      <a [routerLink]="['/signup']" class="btn btn-link">Create new Account!</a>
+  </div>
+</div>

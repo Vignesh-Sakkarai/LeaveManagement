@@ -29,7 +29,7 @@ class AddressServiceImplTest{
 
     @Test
     fun `SHOULD_CREATE_ADDRESS_FOR_USER_WITH_VALID_USER`(){
-        `when`(addressRepository.save(user.address)).thenReturn(user.address)
+        `when`(addressRepository.save(user.address!!)).thenReturn(user.address)
         addressServiceImpl.createAddressForUser(user)
     }
 }

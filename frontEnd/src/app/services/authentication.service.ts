@@ -25,4 +25,13 @@ export class AuthenticationService {
     return this.http.post(this.baseUrl + '/group/validateLogin', data, options).map((res: Response) => res.json());
   }
 
+  logOut() {
+    // remove user from local storage to log user out
+    return this.http.post(this.baseUrl+'/logout',{})
+      .map((response: Response) => {
+        localStorage.removeItem('currentUser');
+      });
+
+  }
+
 }

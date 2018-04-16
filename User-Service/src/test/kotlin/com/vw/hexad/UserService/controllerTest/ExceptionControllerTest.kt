@@ -65,4 +65,5 @@ class ExceptionControllerTest {
             assertEquals(handledErrorResponse.errorMessage, noEntityErrorResponse.errorMessage)
         }
     }
+
 }

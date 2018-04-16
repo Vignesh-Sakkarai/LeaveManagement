@@ -22,6 +22,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'kotlin-jpa'
 apply plugin: 'kotlin-allopen'
+apply plugin: 'jacoco'
 
 group = 'com.vw.hexad'
 version = '0.0.1-SNAPSHOT'

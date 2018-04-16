@@ -1,6 +1,6 @@
 export class Address{
-    streetName: String;
-    city: String;
-    country: String;
-    zip: String;
+  streetName: String;
+  city: String;
+  country: String;
+  zip: String;
 }
