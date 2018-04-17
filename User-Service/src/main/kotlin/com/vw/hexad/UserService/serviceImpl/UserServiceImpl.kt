@@ -30,7 +30,7 @@ class UserServiceImpl : UserService {
     override fun createUser(user: User): User {
         val byteArray: ByteArray = sha256HashingService.generateSalt()
         user.salt = sha256HashingService.convertByteArrayToHex(byteArray)
-        user.password = sha256HashingService.generateSecurePassword(user.password, byteArray)
+        user.PassWord = sha256HashingService.generateSecurePassword(user.PassWord, byteArray)
         addressService.createAddressForUser(user)
         return userRepository.save(user)
     }
@@ -54,7 +54,7 @@ class UserServiceImpl : UserService {
     override fun validateLogin(userName: String, password: String): Boolean {
         val user: User = getByUserName(userName)
         val salt: ByteArray = sha256HashingService.convertStringTOByteArray(user.salt!!)
-        return user.password == sha256HashingService.generateSecurePassword(password, salt)
+        return user.PassWord == sha256HashingService.generateSecurePassword(password, salt)
     }
 
     override fun getByUserName(userName: String): User {

@@ -3,12 +3,12 @@ package com.vw.hexad.UserService.model
 import javax.persistence.*
 
 @Entity
-data class User(
+open class User(
         @Column(name="userName")
         val userName: String,
 
         @Column(name="password")
-        var password: String,
+        var PassWord: String,
 
         @Column(name="salt")
         var salt: String?,
