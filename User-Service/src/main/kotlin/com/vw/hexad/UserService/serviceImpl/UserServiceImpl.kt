@@ -1,5 +1,6 @@
 package com.vw.hexad.UserService.serviceImpl
 
+import com.vw.hexad.UserService.exception.UserExistException
 import com.vw.hexad.UserService.exception.UserNotFoundException
 import com.vw.hexad.UserService.model.User
 import com.vw.hexad.UserService.repository.UserRepository
@@ -16,8 +17,6 @@ import javax.persistence.EntityNotFoundException
 
 @Service
 class UserServiceImpl : UserService {
-
-    val Log: Logger = LoggerFactory.getLogger(UserServiceImpl::class.java)
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -63,6 +62,15 @@ class UserServiceImpl : UserService {
             userRepository.findByUserName(userName)
         }catch(ex: EmptyResultDataAccessException){
             throw UserNotFoundException(userName)
+        }
+    }
+
+    override fun isUserExist(userName: String): Boolean {
+        return try{
+            userRepository.findByUserName(userName)
+            true
+        }catch(ex: EmptyResultDataAccessException){
+            return false
         }
     }
 

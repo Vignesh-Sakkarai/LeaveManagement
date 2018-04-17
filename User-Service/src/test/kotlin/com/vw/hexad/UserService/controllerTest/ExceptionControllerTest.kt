@@ -1,6 +1,7 @@
 package com.vw.hexad.UserService.controllerTest
 
 import com.vw.hexad.UserService.controller.ExceptionController
+import com.vw.hexad.UserService.exception.UserExistException
 import com.vw.hexad.UserService.exception.UserNotFoundException
 import com.vw.hexad.UserService.model.exception.ErrorResponse
 import org.junit.Assert.assertEquals
@@ -24,6 +25,8 @@ class ExceptionControllerTest {
     private val jpaObjErrorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "EntityNotFoundException for the provided userId")
 
     private val noEntityErrorResponse  = ErrorResponse(HttpStatus.NOT_FOUND.value(), "EntityNotFoundException for the provided userId")
+
+    private val userExistErrorResponse  = ErrorResponse(HttpStatus.FOUND.value(), "UserName Already Exist, please provide a valid user name: Vignesh")
 
     @InjectMocks
     lateinit var exceptionController: ExceptionController
@@ -63,6 +66,17 @@ class ExceptionControllerTest {
             val handledErrorResponse:ErrorResponse = exceptionController.handleEntityNotFoundException(exception)
             assertEquals(handledErrorResponse.errorCode, noEntityErrorResponse.errorCode)
             assertEquals(handledErrorResponse.errorMessage, noEntityErrorResponse.errorMessage)
+        }
+    }
+
+    @Test
+    fun `SHOULD_HANDLE_USER_EXIST_EXCEPTION_GET_302_ERROR_CODE`(){
+        try{
+            throw UserExistException("UserName Already Exist, please provide a valid user name: Vignesh")
+        }catch(exception: UserExistException){
+            val handledErrorResponse:ErrorResponse = exceptionController.handleUserExistException(exception)
+            assertEquals(handledErrorResponse.errorCode, userExistErrorResponse.errorCode)
+            assertEquals(handledErrorResponse.errorMessage, userExistErrorResponse.errorMessage)
         }
     }
 

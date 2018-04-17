@@ -1,6 +1,7 @@
+import { any } from 'codelyzer/util/function';
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -18,20 +19,39 @@ export class AuthenticationService {
     return this.http.post(this.baseUrl + '/web/signup', data, options).map((res: Response) => res.json());
   }
 
-  validateLogin(userName: String, password: String): Observable<any> {
+  validateLogin(userName: String, password: String): Observable<boolean> {
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers });
     const data = {'userName': userName, 'password' : password};
-    return this.http.post(this.baseUrl + '/group/validateLogin', data, options).map((res: Response) => res.json());
+    return this.http.post(this.baseUrl + '/group/validateLogin', data, options).map((res: Response) => {
+        //Login Successfull check if there is a token in the response
+        let token = res.json() && res.json().token;
+        if(token){
+          localStorage.setItem('currentUser', JSON.stringify({userName: userName, token: token}));
+          return true;
+        }else{
+          return false;
+        }
+    }).catch((error:any) => Observable.throw(error.json().error || 'Server Error!!'));
+  }
+
+  getToken(): String{
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var token = currentUser && currentUser.token;
+    return token ? token : "";
   }
 
   logOut() {
     // remove user from local storage to log user out
-    return this.http.post(this.baseUrl+'/logout',{})
-      .map((response: Response) => {
-        localStorage.removeItem('currentUser');
-      });
+    localStorage.removeItem('currentUser');
+  }
 
+  getUserProfile(userName: String): Observable<User>{
+    const headers = new Headers({'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + this.getToken()});
+    const options = new RequestOptions({headers: headers});
+    return this.http.get(this.baseUrl+"/group/"+userName, options).map((res: Response) => {
+          res.json()
+    }).catch((error:any) => Observable.throw(error.json().error));
   }
 
 }

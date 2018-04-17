@@ -18,14 +18,18 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    //reset Login Status before login
+    this.authService.logOut();
   }
 
   OnLoginSubmit() {
     this.authService.validateLogin(this.user.userName, this.user.password).subscribe(data => {
-        localStorage.setItem('currentUser', JSON.stringify(this.user));
-        this.router.navigate(['/profile']);
-        return true;
+        if(data === true){
+          this.router.navigate(['/profile']);
+        }else{
+          this.user = new User();
+          this.errorMessage = 'UserName or Password is wrong!!';
+        }
     }, error => {
       this.user = new User();
       this.errorMessage = 'UserName or Password is wrong!!';

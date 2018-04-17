@@ -9,6 +9,7 @@ import com.vw.hexad.UserService.service.AddressService
 import com.vw.hexad.UserService.service.UserService
 import com.vw.hexad.UserService.serviceImpl.SHA256HashingServiceImpl
 import com.vw.hexad.UserService.serviceImpl.UserServiceImpl
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -21,7 +22,6 @@ import org.mockito.MockitoAnnotations
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-@RunWith(SpringJUnit4ClassRunner::class)
 class UserServiceImplTest{
 
     private val user = User("Vignesh", "cc3d7354059b37288cc41796658d3c4548235e92e00978bbaedd0e94bfe5545c","5e90d19eb3f832955908db38f76edfbf", "vignesh@gmail.com",
@@ -83,6 +83,12 @@ class UserServiceImplTest{
     fun `SHOULD_THROW_EXCEPTION_WHEN_GET_BY_USERNAME_AS_INVALID`(){
         `when`(userRepository.findByUserName("InvalidUser")).thenThrow(UserNotFoundException::class.java)
         userServiceImp.getByUserName("InvalidUser")
+    }
+
+    @Test
+    fun `SHOULD_CHECK_WHEN_THE_USER_ALREADY_EXIST_OR_NOT`(){
+        `when`(userRepository.findByUserName("Vignesh")).thenReturn(user)
+        Assert.assertTrue(userServiceImp.isUserExist(user.userName))
     }
 
 }

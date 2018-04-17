@@ -10,4 +10,5 @@ interface UserService{
     fun getByUserId(userId: Long): User?
     fun validateLogin(userName: String, password: String): Boolean
     fun getByUserName(userName: String): User?
+    fun isUserExist(userName: String): Boolean
 }
