@@ -8,7 +8,7 @@ open class User(
         val userName: String,
 
         @Column(name="password")
-        var PassWord: String,
+        var passWord: String,
 
         @Column(name="salt")
         var salt: String?,

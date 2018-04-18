@@ -22,7 +22,7 @@ open class AuthUserDetails(user: User) : User(), UserDetails{
     }
 
     override fun getPassword(): String {
-        return super.PassWord
+        return super.passWord
     }
 
     override fun isAccountNonExpired(): Boolean {

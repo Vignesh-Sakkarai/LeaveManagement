@@ -16,13 +16,13 @@ export class AuthenticationService {
     const headers = new Headers({ 'Content-Type': 'application/json' });
     const options = new RequestOptions({ headers: headers });
     const data = JSON.stringify(user);
-    return this.http.post(this.baseUrl + '/web/signup', data, options).map((res: Response) => res.json());
+    return this.http.post(this.baseUrl + '/web/signup', data, {headers: headers}).map((res: Response) => res.json());
   }
 
   validateLogin(userName: String, password: String): Observable<boolean> {
-    const headers = new Headers({ 'Content-Type': 'application/json' });
+    const headers = new Headers({ 'Content-Type': 'application/json'});
     const options = new RequestOptions({ headers: headers });
-    const data = {'userName': userName, 'password' : password};
+    const data = {'userName': userName, 'passWord' : password};
     return this.http.post(this.baseUrl + '/group/validateLogin', data, options).map((res: Response) => {
         //Login Successfull check if there is a token in the response
         let token = res.json() && res.json().token;
@@ -39,6 +39,11 @@ export class AuthenticationService {
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     var token = currentUser && currentUser.token;
     return token ? token : "";
+  }
+
+  isLoggedIn():boolean{
+    var token: String = this.getToken();
+    return token && token.length > 0;
   }
 
   logOut() {

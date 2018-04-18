@@ -1,14 +1,11 @@
 package com.vw.hexad.UserService.serviceImpl
 
-import com.vw.hexad.UserService.exception.UserExistException
 import com.vw.hexad.UserService.exception.UserNotFoundException
 import com.vw.hexad.UserService.model.User
 import com.vw.hexad.UserService.repository.UserRepository
 import com.vw.hexad.UserService.service.AddressService
 import com.vw.hexad.UserService.service.SHA256HashingService
 import com.vw.hexad.UserService.service.UserService
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException
@@ -30,7 +27,7 @@ class UserServiceImpl : UserService {
     override fun createUser(user: User): User {
         val byteArray: ByteArray = sha256HashingService.generateSalt()
         user.salt = sha256HashingService.convertByteArrayToHex(byteArray)
-        user.PassWord = sha256HashingService.generateSecurePassword(user.PassWord, byteArray)
+        user.passWord = sha256HashingService.generateSecurePassword(user.passWord, byteArray)
         addressService.createAddressForUser(user)
         return userRepository.save(user)
     }
@@ -54,7 +51,7 @@ class UserServiceImpl : UserService {
     override fun validateLogin(userName: String, password: String): Boolean {
         val user: User = getByUserName(userName)
         val salt: ByteArray = sha256HashingService.convertStringTOByteArray(user.salt!!)
-        return user.PassWord == sha256HashingService.generateSecurePassword(password, salt)
+        return user.passWord == sha256HashingService.generateSecurePassword(password, salt)
     }
 
     override fun getByUserName(userName: String): User {

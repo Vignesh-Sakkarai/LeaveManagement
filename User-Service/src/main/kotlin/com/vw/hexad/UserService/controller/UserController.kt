@@ -39,8 +39,8 @@ class UserController{
     fun validateLogin(@RequestBody loginInfo: User): Boolean{
         val user = userService.getByUserName(loginInfo.userName)
         user?.let {
-            val hashedValue = sha256HashingService.generateSecurePassword(loginInfo.password, sha256HashingService.convertStringTOByteArray(user.salt!!))
-            when(user.password){
+            val hashedValue = sha256HashingService.generateSecurePassword(loginInfo.passWord, sha256HashingService.convertStringTOByteArray(user.salt!!))
+            when(user.passWord){
                 hashedValue -> return true
                 else -> throw UserNotFoundException("User Not Found for this provided userName::" + loginInfo.userName)
             }
