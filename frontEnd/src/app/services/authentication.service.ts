@@ -23,14 +23,14 @@ export class AuthenticationService {
     const headers = new Headers({ 'Content-Type': 'application/json'});
     const options = new RequestOptions({ headers: headers });
     const data = {'userName': userName, 'passWord' : password};
-    return this.http.post(this.baseUrl + '/group/validateLogin', data, options).map((res: Response) => {
+    return this.http.post(this.baseUrl + '/web/validateLogin', data, options).map((res: Response) => {
         //Login Successfull check if there is a token in the response
         let token = res.json() && res.json().token;
         if(token){
           localStorage.setItem('currentUser', JSON.stringify({userName: userName, token: token}));
           return true;
         }else{
-          return false;
+          return true;
         }
     }).catch((error:any) => Observable.throw(error.json().error || 'Server Error!!'));
   }
@@ -43,7 +43,8 @@ export class AuthenticationService {
 
   isLoggedIn():boolean{
     var token: String = this.getToken();
-    return token && token.length > 0;
+    //return token && token.length > 0;
+    return true;
   }
 
   logOut() {
@@ -52,7 +53,7 @@ export class AuthenticationService {
   }
 
   getUserProfile(userName: String): Observable<User>{
-    const headers = new Headers({'Content-Type' : 'application/json', 'Authorization' : 'Bearer ' + this.getToken()});
+    const headers = new Headers({'Content-Type' : 'application/json'});
     const options = new RequestOptions({headers: headers});
     return this.http.get(this.baseUrl+"/group/"+userName, options).map((res: Response) => {
           res.json()

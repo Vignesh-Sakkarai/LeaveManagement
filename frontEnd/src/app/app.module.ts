@@ -28,7 +28,7 @@ const appRoutes : Routes = [
     ProfileComponent
   ],
   imports: [
-    BrowserModule, HttpModule, HttpClientModule, FormsModule, RouterModule.forRoot( appRoutes, { enableTracing: true })
+    BrowserModule, HttpModule, HttpClientModule, FormsModule, RouterModule.forRoot(appRoutes)
   ],
   providers: [AuthenticationService, UrlPermission],
   bootstrap: [AppComponent]

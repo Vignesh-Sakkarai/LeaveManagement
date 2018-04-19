@@ -56,26 +56,6 @@ class UserControllerTest{
     }
 
     @Test
-    fun `SHOULD_RETURN_THE_USER_OBJECT_FOR_THE_PROVIDED_USERID`(){
-        Mockito.`when`(userService.getByUserId(user.userId)).thenReturn(user)
-        mockMvc.perform(get("/group/{userId}",user.userId).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk)
-                .andExpect(jsonPath("$.userName", Matchers.`is`("Vignesh")))
-        Mockito.verify(userService).getByUserId(user.userId)
-    }
-
-    @Test
-    fun `SHOULD_RETURN_GET_BY_ID_METHOD_STATUS_404_NOT_FOUND`() {
-        Mockito.`when`(userService.getByUserId(user.userId)).thenThrow(UserNotFoundException("User Not Found for this provided userId::" + user.userId))
-        mockMvc.perform(get("/group/{userId}", user.userId).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound)
-                .andExpect(jsonPath("$.errorCode", Matchers.`is`(errorResponse.errorCode)))
-                .andExpect(jsonPath("$.errorMessage", Matchers.`is`(errorResponse.errorMessage)))
-        Mockito.verify(userService).getByUserId(user.userId)
-    }
-
-    @Test
     fun `SHOULD_VALIDATE_LOGIN_WITH_THE_VALID_USER`(){
         userController.sha256HashingService =  SHA256HashingServiceImpl()
         Mockito.`when`(userService.getByUserName(user.userName)).thenReturn(user)

@@ -11,13 +11,12 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.crypto.password.PasswordEncoder
 
 @EnableWebSecurity
 @EnableJpaRepositories(basePackageClasses = arrayOf(UserRepository::class, AddressRepository::class))
 @Configuration
 class SecurityConfig(private val userDetailService: UserDetailsService,
-                     private val passwordHashingAndMatcher: PasswordEncoder): WebSecurityConfigurerAdapter() {
+                     private val passwordHashingAndMatcher: PasswordHashingAndMatcherConfig): WebSecurityConfigurerAdapter() {
 
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
@@ -31,7 +30,8 @@ class SecurityConfig(private val userDetailService: UserDetailsService,
     override fun configure(http: HttpSecurity?) {
         http?.csrf()?.disable()
         http?.authorizeRequests()?.antMatchers("/group/*")?.authenticated()
-                ?.antMatchers(HttpMethod.OPTIONS, "/**")?.permitAll()?.anyRequest()?.permitAll();
+                ?.antMatchers(HttpMethod.OPTIONS, "/**")?.permitAll()?.anyRequest()?.permitAll()
+
         http?.headers()?.cacheControl()
     }
 

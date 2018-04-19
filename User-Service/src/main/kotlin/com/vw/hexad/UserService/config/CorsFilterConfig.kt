@@ -4,13 +4,10 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.stereotype.Component
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.CorsFilter
-import javax.servlet.*
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+
 
 @Configuration
 class CorsFilterConfig{
@@ -31,7 +28,4 @@ class CorsFilterConfig{
         source.registerCorsConfiguration("/**", config)
         return CorsFilter(source)
     }
-
-
-
 }

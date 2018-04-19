@@ -15,16 +15,15 @@ export class ProfileComponent implements OnInit {
   errorMessage: String;
   constructor(public authService: AuthenticationService, public router: Router) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  }
-
-  ngOnInit() {
-    this.authService.getUserProfile(this.currentUser.userName).subscribe(user =>{
-       this.user = user;
+    this.authService.getUserProfile("Vignesh").subscribe(user =>{
+      this.user = user;
     }, error => {
       this.router.navigate(['/login']);
       this.errorMessage = 'Invalid Login, Please login again with valid credentials!!';
     })
   }
+
+  ngOnInit() { }
 
 // login out from the app
   logOut() {
